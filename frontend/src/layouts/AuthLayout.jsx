@@ -32,7 +32,6 @@ export default function AuthLayout({ title, children, variant = 'customer' }) {
                     Rx
                   </span>
                 )}
-                
               </Link>
 
               <div>

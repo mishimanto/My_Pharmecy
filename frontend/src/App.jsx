@@ -82,9 +82,11 @@ function CustomerAuthApp({ children }) {
 
 function AdminApp({ children }) {
   return (
-    <StaffAuthProvider>
-      {children}
-    </StaffAuthProvider>
+    <SiteSettingsProvider>
+      <StaffAuthProvider>
+        {children}
+      </StaffAuthProvider>
+    </SiteSettingsProvider>
   )
 }
 
