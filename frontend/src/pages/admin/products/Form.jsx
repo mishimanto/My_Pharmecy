@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { FiArrowLeft, FiImage, FiPlusCircle, FiSave, FiTrash2, FiUploadCloud, FiX } from 'react-icons/fi'
 import Swal from 'sweetalert2'
 import toast from 'react-hot-toast'
 import { adminApi } from '../../../api/adminApi'
 import { productApi } from '../../../api/productApi'
 import AdminLoadingState from '../../../components/admin/AdminLoadingState'
-import { clearProductsCache } from '../../../utils/adminProductCache'
+import { clearProductsCache, updateProductInCaches } from '../../../utils/adminProductCache'
 import { handleImageFallback, resolveImageUrl } from '../../../utils/imageUrl'
 
 const initialForm = {
@@ -66,6 +66,7 @@ const productTypeOptions = [
   ['personal_care', 'Personal care'],
   ['beauty', 'Beauty & skin care'],
   ['baby_care', 'Mother & baby care'],
+  ['other', 'Other pharmacy product'],
 ]
 
 const packageUnitOptions = [
@@ -210,13 +211,13 @@ function readFileAsDataUri(file) {
   })
 }
 
-async function resizeProductImageToDataUri(file) {
+async function resizeProductImageToBlob(file) {
   const source = await readFileAsDataUri(file)
 
   return new Promise((resolve, reject) => {
     const image = new Image()
     image.onload = () => {
-      const maxSize = 420
+      const maxSize = 900
       const width = image.naturalWidth || image.width
       const height = image.naturalHeight || image.height
       const scale = Math.min(1, maxSize / Math.max(width, height))
@@ -226,44 +227,49 @@ async function resizeProductImageToDataUri(file) {
       canvas.width = Math.max(1, Math.round(width * scale))
       canvas.height = Math.max(1, Math.round(height * scale))
       context.drawImage(image, 0, 0, canvas.width, canvas.height)
-      resolve(canvas.toDataURL('image/jpeg', 0.68))
+
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          reject(new Error('Unable to prepare image upload.'))
+          return
+        }
+
+        resolve(blob)
+      }, 'image/jpeg', 0.78)
     }
     image.onerror = reject
     image.src = source
   })
 }
 
-async function uploadProductImageInChunks(productId, dataUri, isPrimary) {
-  const chunkSize = 1200
-  const uploadId = `${Date.now()}-${Math.random().toString(36).slice(2)}`
-  const total = Math.ceil(dataUri.length / chunkSize)
-
-  for (let index = 0; index < total; index += 1) {
-    await adminApi.uploadProductImageChunk(productId, {
-      upload_id: uploadId,
-      index,
-      total,
-      chunk: dataUri.slice(index * chunkSize, (index + 1) * chunkSize),
-      primary: isPrimary ? 1 : 0,
-    })
-  }
-}
-
 export default function ProductForm({ mode = 'create' }) {
   const { id } = useParams()
+  const location = useLocation()
   const navigate = useNavigate()
   const isEdit = mode === 'edit'
+  const navigationProduct = location.state?.product
   const [form, setForm] = useState(initialForm)
   const [categories, setCategories] = useState([])
   const [manufacturers, setManufacturers] = useState([])
   const [suppliers, setSuppliers] = useState([])
-  const [productOptions, setProductOptions] = useState([])
   const [batchForm, setBatchForm] = useState(initialBatchForm)
   const [images, setImages] = useState([])
   const [files, setFiles] = useState([])
-  const [loading, setLoading] = useState(isEdit)
+  const [loading, setLoading] = useState(isEdit && !navigationProduct)
   const [saving, setSaving] = useState(false)
   const [draftSaving, setDraftSaving] = useState(false)
+  const [alternativeSearch, setAlternativeSearch] = useState('')
+  const [alternativeResults, setAlternativeResults] = useState([])
+  const [alternativeLoading, setAlternativeLoading] = useState(false)
+  const [selectedAlternativeProducts, setSelectedAlternativeProducts] = useState([])
+  const isMedicine = (form.product_type || 'medicine') === 'medicine'
+
+  useEffect(() => {
+    if (!isEdit || !navigationProduct) return
+
+    setForm(formFromProduct(navigationProduct))
+    setImages(navigationProduct.images || [])
+  }, [isEdit, navigationProduct])
 
   useEffect(() => {
     let active = true
@@ -272,17 +278,57 @@ export default function ProductForm({ mode = 'create' }) {
       adminApi.listFresh('categories', { per_page: 100 }),
       adminApi.listFresh('manufacturers', { per_page: 100 }),
       adminApi.listFresh('suppliers', { per_page: 100, status: 'active' }),
-      adminApi.listFresh('products', { per_page: 500 }),
-    ]).then(([categoryResponse, manufacturerResponse, supplierResponse, productResponse]) => {
+    ]).then(([categoryResponse, manufacturerResponse, supplierResponse]) => {
       if (!active) return
       setCategories(categoryResponse.data.data?.data || [])
       setManufacturers(manufacturerResponse.data.data?.data || [])
       setSuppliers(supplierResponse.data.data?.data || [])
-      setProductOptions(productResponse.data.data?.data || [])
     }).catch(() => active && toast.error('Unable to load product options.'))
 
     return () => { active = false }
   }, [])
+
+  useEffect(() => {
+    if (!isMedicine) {
+      setAlternativeResults([])
+      setSelectedAlternativeProducts([])
+      return undefined
+    }
+
+    let active = true
+    const selectedIds = (form.alternative_product_ids || []).filter(Boolean)
+
+    if (selectedIds.length === 0 && !alternativeSearch.trim()) {
+      setAlternativeResults([])
+      setAlternativeLoading(false)
+      return () => { active = false }
+    }
+
+    setAlternativeLoading(true)
+
+    adminApi.productOptions({
+      product_type: 'medicine',
+      limit: alternativeSearch.trim() ? 24 : Math.max(selectedIds.length, 12),
+      search: alternativeSearch.trim() || undefined,
+      ids: selectedIds.join(',') || undefined,
+      exclude_id: id || form.id || undefined,
+    })
+      .then(({ data }) => {
+        if (!active) return
+        const rows = data.data || []
+        const selectedMap = new Map(selectedIds.map((selectedId) => [String(selectedId), true]))
+
+        setAlternativeResults(rows)
+        setSelectedAlternativeProducts(rows.filter((product) => selectedMap.has(String(product.id))))
+      })
+      .catch(() => active && toast.error('Unable to load product options.'))
+      .finally(() => {
+        if (!active) return
+        setAlternativeLoading(false)
+      })
+
+    return () => { active = false }
+  }, [alternativeSearch, form.alternative_product_ids, form.id, id, isMedicine])
 
   useEffect(() => {
     if (!isEdit) return undefined
@@ -305,11 +351,16 @@ export default function ProductForm({ mode = 'create' }) {
   const preview = useMemo(() => filePreview(files, images), [files, images])
   const selectedCategory = categories.find((category) => String(category.id) === String(form.category_id))
   const selectedManufacturer = manufacturers.find((manufacturer) => String(manufacturer.id) === String(form.manufacturer_id))
-  const isMedicine = (form.product_type || 'medicine') === 'medicine'
-  const selectableAlternativeProducts = useMemo(
-    () => productOptions.filter((product) => (product.product_type || 'medicine') === 'medicine' && String(product.id) !== String(id || form.id || '')),
-    [form.id, id, productOptions],
-  )
+  const selectableAlternativeProducts = useMemo(() => {
+    const selectedIds = new Set((form.alternative_product_ids || []).map(String))
+    const currentId = String(id || form.id || '')
+
+    return alternativeResults.filter((product) => (
+      (product.product_type || 'medicine') === 'medicine'
+      && String(product.id) !== currentId
+      && !selectedIds.has(String(product.id))
+    ))
+  }, [alternativeResults, form.alternative_product_ids, form.id, id])
 
   const setField = (field, value) => {
     setForm((current) => ({ ...current, [field]: value }))
@@ -339,8 +390,19 @@ export default function ProductForm({ mode = 'create' }) {
     productApi.clearCache()
   }
 
-  const setAlternativeIds = (options) => {
-    setField('alternative_product_ids', Array.from(options).map((option) => Number(option.value)))
+  const addAlternativeProduct = (product) => {
+    const nextIds = Array.from(new Set([...(form.alternative_product_ids || []).map(Number), Number(product.id)]))
+    setField('alternative_product_ids', nextIds)
+    setSelectedAlternativeProducts((current) => {
+      if (current.some((item) => String(item.id) === String(product.id))) return current
+      return [...current, product]
+    })
+    setAlternativeSearch('')
+  }
+
+  const removeAlternativeProduct = (productId) => {
+    setField('alternative_product_ids', (form.alternative_product_ids || []).filter((item) => Number(item) !== Number(productId)))
+    setSelectedAlternativeProducts((current) => current.filter((item) => Number(item.id) !== Number(productId)))
   }
 
   const addInteraction = () => {
@@ -493,13 +555,25 @@ export default function ProductForm({ mode = 'create' }) {
       const productId = id || response.data.data.id
 
       if (files.length > 0) {
-        for (const [index, file] of files.entries()) {
-          const imageData = await resizeProductImageToDataUri(file)
-          await uploadProductImageInChunks(productId, imageData, index === 0)
-        }
+        const preparedImages = await Promise.all(
+          files.map(async (file, index) => {
+            const blob = await resizeProductImageToBlob(file)
+            return { blob, file, index }
+          }),
+        )
+
+        const imagePayload = new FormData()
+        preparedImages.forEach(({ blob, file }) => {
+          imagePayload.append('images[]', blob, `${file.name.replace(/\.[^/.]+$/, '') || 'product-image'}.jpg`)
+        })
+        imagePayload.append('primary_index', '0')
+
+        await adminApi.uploadProductImages(productId, imagePayload)
       }
 
-      clearProductsCache()
+      const refreshedResponse = await adminApi.show('products', productId)
+      const refreshedProduct = refreshedResponse.data.data
+      updateProductInCaches(refreshedProduct)
       productApi.clearCache()
       toast.success(isEdit ? 'Product updated.' : 'Product created.')
       navigate('/admin/products')
@@ -704,9 +778,7 @@ export default function ProductForm({ mode = 'create' }) {
           <section className="rounded-lg border border-slate-200 bg-white p-4">
             <div className="mb-4 flex flex-col gap-1 border-b border-slate-200 pb-4">
               <div className="text-md font-semibold text-slate-900">Medicine details for product page</div>
-              <div className="text-sm text-slate-500">
-                Structured medicine information appears on the customer product details page in dedicated sections.
-              </div>
+              
             </div>
 
             <div className="space-y-3">
@@ -783,20 +855,64 @@ export default function ProductForm({ mode = 'create' }) {
             <div className="grid gap-5">
               <label className="block">
                 <span className="mb-1 block text-sm font-medium text-slate-700">Medicine alternatives</span>
-                <select
-                  multiple
-                  size={Math.min(6, Math.max(3, selectableAlternativeProducts.length || 3))}
-                  value={(form.alternative_product_ids || []).map(String)}
-                  onChange={(event) => setAlternativeIds(event.target.selectedOptions)}
-                  className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition focus:border-emerald-300 focus:ring-2 focus:ring-emerald-100"
-                >
-                  {selectableAlternativeProducts.map((product) => (
-                    <option key={product.id} value={product.id}>
-                      {product.product_name} {product.generic_name ? `- ${product.generic_name}` : ''}
-                    </option>
-                  ))}
-                </select>
-                <span className="mt-1 block text-xs text-slate-500">Hold Ctrl to select multiple alternatives. Alternatives are saved both ways.</span>
+                <div className="rounded-md border border-slate-300 bg-white">
+                  <input
+                    value={alternativeSearch}
+                    onChange={(event) => setAlternativeSearch(event.target.value)}
+                    placeholder="Search medicine by product, generic, or brand"
+                    className="w-full border-b border-slate-200 px-3 py-2 text-sm outline-none transition focus:border-emerald-300 focus:ring-2 focus:ring-emerald-100"
+                  />
+
+                  <div className="p-3">
+                    {(selectedAlternativeProducts || []).length > 0 ? (
+                      <div className="mb-3 flex flex-wrap gap-2">
+                        {selectedAlternativeProducts.map((product) => (
+                          <button
+                            key={product.id}
+                            type="button"
+                            onClick={() => removeAlternativeProduct(product.id)}
+                            className="inline-flex items-center gap-2 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-800 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700"
+                            title="Remove alternative"
+                          >
+                            <span>{product.product_name}</span>
+                            {product.generic_name ? <span className="font-normal text-emerald-700">- {product.generic_name}</span> : null}
+                            <FiX className="h-3.5 w-3.5" />
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {alternativeLoading ? (
+                      <div className="rounded-md border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-500">
+                        Loading medicine options...
+                      </div>
+                    ) : selectableAlternativeProducts.length > 0 ? (
+                      <div className="max-h-52 space-y-2 overflow-y-auto">
+                        {selectableAlternativeProducts.map((product) => (
+                          <button
+                            key={product.id}
+                            type="button"
+                            onClick={() => addAlternativeProduct(product)}
+                            className="flex w-full items-start justify-between gap-3 rounded-md border border-slate-200 px-3 py-2 text-left transition hover:border-emerald-200 hover:bg-emerald-50"
+                          >
+                            <div>
+                              <div className="text-sm font-medium text-slate-900">{product.product_name}</div>
+                              <div className="text-xs text-slate-500">{product.generic_name || 'No generic name'}</div>
+                            </div>
+                            <FiPlusCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="rounded-md border border-dashed border-slate-200 bg-slate-50 px-3 py-3 text-sm text-slate-500">
+                        {alternativeSearch.trim()
+                          ? 'No matching medicine found.'
+                          : 'Search to add medicine alternatives.'}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <span className="mt-1 block text-xs text-slate-500">Search and add alternatives one by one. Alternatives are saved both ways.</span>
               </label>
 
               <div>

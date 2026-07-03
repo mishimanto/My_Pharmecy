@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import { FiCheckCircle, FiClock, FiCreditCard, FiRotateCcw } from 'react-icons/fi'
 import { adminApi } from '../../api/adminApi'
 import AdminLoadingState from '../../components/admin/AdminLoadingState'
+import AdminPagination from '../../components/admin/AdminPagination'
 import AdminStatCard from '../../components/admin/AdminStatCard'
 import EmptyState from '../../components/common/EmptyState'
 // import PageHeader from '../../components/common/PageHeader'
@@ -298,13 +299,11 @@ export default function Payments() {
       ) : null}
 
       {meta?.last_page > 1 ? (
-        <div className="mt-4 flex flex-col gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
-          <span>Page {meta.current_page || params.page} / {meta.last_page}</span>
-          <div className="flex justify-end gap-2">
-            <button disabled={params.page <= 1} onClick={() => updateParams({ ...params, page: params.page - 1 })} className="rounded-md border border-slate-300 px-3 py-1 font-medium transition hover:border-emerald-300 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50">Previous</button>
-            <button disabled={params.page >= meta.last_page} onClick={() => updateParams({ ...params, page: params.page + 1 })} className="rounded-md border border-slate-300 px-3 py-1 font-medium transition hover:border-emerald-300 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50">Next</button>
-          </div>
-        </div>
+        <AdminPagination
+          currentPage={meta.current_page || params.page}
+          lastPage={meta.last_page}
+          onPageChange={(nextPage) => updateParams({ ...params, page: nextPage })}
+        />
       ) : null}
 
       <div className="mt-4 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-slate-600">

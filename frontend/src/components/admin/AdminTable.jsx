@@ -5,6 +5,7 @@ import toast from 'react-hot-toast'
 import { adminApi } from '../../api/adminApi'
 import { adminQueryKeys, useAdminListQuery } from '../../queries/adminQueries'
 import EmptyState from '../common/EmptyState'
+import AdminPagination from './AdminPagination'
 import AdminLoadingState from './AdminLoadingState'
 
 export default function AdminTable({ resource }) {
@@ -59,15 +60,13 @@ export default function AdminTable({ resource }) {
           </table>
         </div>
       )}
-      {meta && (
-        <div className="mt-4 flex items-center justify-between text-sm text-slate-600">
-          <span>Page {meta.current_page || page} / {meta.last_page || 1}</span>
-          <div className="flex gap-2">
-            <button disabled={page <= 1} className="rounded border px-3 py-1 disabled:opacity-40" onClick={() => setPage((value) => Math.max(1, value - 1))}>Previous</button>
-            <button disabled={!meta || meta.current_page >= meta.last_page} className="rounded border px-3 py-1 disabled:opacity-40" onClick={() => setPage((value) => value + 1)}>Next</button>
-          </div>
-        </div>
-      )}
+      {meta ? (
+        <AdminPagination
+          currentPage={meta.current_page || page}
+          lastPage={meta.last_page || 1}
+          onPageChange={setPage}
+        />
+      ) : null}
     </div>
   )
 }

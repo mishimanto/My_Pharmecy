@@ -356,7 +356,7 @@ export function useReturnQuery(id, options = {}) {
 export function useSupportTicketsQuery(options = {}) {
   return useQuery({
     queryKey: customerQueryKeys.supportTickets,
-    queryFn: () => supportApi.list().then((response) => response.data.data || []),
+    queryFn: () => supportApi.list().then((response) => response.data.data?.data || response.data.data || []),
     ...options,
   })
 }

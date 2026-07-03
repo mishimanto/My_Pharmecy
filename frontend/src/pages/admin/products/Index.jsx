@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import { adminApi } from '../../../api/adminApi'
 import AdminFilterBar from '../../../components/admin/AdminFilterBar'
 import AdminLoadingState from '../../../components/admin/AdminLoadingState'
+import AdminPagination from '../../../components/admin/AdminPagination'
 import AdminStatCard from '../../../components/admin/AdminStatCard'
 import EmptyState from '../../../components/common/EmptyState'
 import OptimizedImage from '../../../components/common/OptimizedImage'
@@ -48,14 +49,13 @@ export default function ProductIndex() {
   }, [])
 
   const loadProductStats = () => {
-    adminApi.listFresh('products', { per_page: 1000, page: 1 })
+    adminApi.productSummary()
       .then(({ data }) => {
-        const rows = data.data?.data || []
         setProductStats({
-          total: data.data?.total ?? rows.length,
-          active: rows.filter((product) => product.is_active).length,
-          prescription: rows.filter((product) => product.requires_prescription).length,
-          inactive: rows.filter((product) => !product.is_active).length,
+          total: data.data?.total ?? 0,
+          active: data.data?.active ?? 0,
+          prescription: data.data?.prescription ?? 0,
+          inactive: data.data?.inactive ?? 0,
         })
       })
       .catch(() => {})
@@ -234,7 +234,7 @@ export default function ProductIndex() {
                     <td className="px-4 py-3 text-center"><span className={`text-xs font-semibold ${product.is_active ? 'text-emerald-600' : 'text-rose-600'}`}>{product.is_active ? 'Active' : 'Inactive'}</span></td>
                     <td className="px-4 py-3 text-center">
                       <div className="flex justify-center gap-3">
-                        <Link to={`/admin/products/${product.id}/edit`} className="flex h-8 w-8 items-center justify-center rounded-md border border-emerald-100 text-emerald-700 transition hover:bg-emerald-50" title="Edit product"><FiEdit className="h-4 w-4" /></Link>
+                        <Link to={`/admin/products/${product.id}/edit`} state={{ product }} className="flex h-8 w-8 items-center justify-center rounded-md border border-emerald-100 text-emerald-700 transition hover:bg-emerald-50" title="Edit product"><FiEdit className="h-4 w-4" /></Link>
                         <button onClick={() => toggleStatus(product)} className="flex h-8 w-8 items-center justify-center rounded-md border border-amber-100 text-amber-600 transition hover:bg-amber-50" title={product.is_active ? 'Deactivate product' : 'Activate product'}><FiPower className="h-4 w-4" /></button>
                         <button onClick={() => remove(product)} className="flex h-8 w-8 items-center justify-center rounded-md border border-rose-100 text-rose-600 transition hover:bg-rose-50" title="Delete product"><FiTrash2 className="h-4 w-4" /></button>
                       </div>
@@ -248,13 +248,11 @@ export default function ProductIndex() {
       ) : null}
 
       {meta?.last_page > 1 ? (
-        <div className="mt-4 flex flex-col gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
-          <span>Page {meta.current_page || params.page} / {meta.last_page}</span>
-          <div className="flex justify-end gap-2">
-            <button disabled={params.page <= 1} onClick={() => updateParams({ ...params, page: params.page - 1 })} className="rounded-md border border-slate-300 px-3 py-1 font-medium transition hover:border-emerald-300 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50">Previous</button>
-            <button disabled={params.page >= meta.last_page} onClick={() => updateParams({ ...params, page: params.page + 1 })} className="rounded-md border border-slate-300 px-3 py-1 font-medium transition hover:border-emerald-300 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50">Next</button>
-          </div>
-        </div>
+        <AdminPagination
+          currentPage={meta.current_page || params.page}
+          lastPage={meta.last_page}
+          onPageChange={(nextPage) => updateParams({ ...params, page: nextPage })}
+        />
       ) : null}
     </>
   )

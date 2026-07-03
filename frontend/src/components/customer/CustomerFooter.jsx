@@ -31,7 +31,7 @@ export default function CustomerFooter() {
       title: t('সাপোর্ট', 'Support'),
       items: [
         [t('কাস্টমার হেল্প', 'Customer help'), '/support'],
-        ['FAQ', '/faq'],
+        [t('জিজ্ঞাসা', 'FAQ'), '/faq'],
         [t('প্রাইভেসি পলিসি', 'Privacy policy'), '/privacy-policy'],
         [t('শর্তাবলি', 'Terms and conditions'), '/terms-and-conditions'],
       ],

@@ -342,11 +342,11 @@ export default function CustomerHeader() {
   const offerBar = activeOffer ? getLocalizedOffer(activeOffer, isBangla) : null
   const offerTimeLeft = nowTick >= 0 ? getOfferTimeLeft(offerBar?.endsAt) : null
   const customerName = customer?.full_name?.trim() || t('সাইন ইন', 'Sign in')
-  const displayCustomerName = customerName.length > 12 ? `${customerName.slice(0, 12)}...` : customerName
+  const displayCustomerName = customerName
   const avatarName = customer?.full_name?.trim() || t('গেস্ট', 'Guest')
   const nav = [
     ['/', t('হোম', 'Home')],
-    ['/products', t('পণ্য', 'Products')],
+    ['/products', t('পণ্যসমূহ', 'Products')],
     ['/offers', t('অফার', 'Offers')],
     ['/prescriptions', t('প্রেসক্রিপশন আপলোড', 'Upload Prescription')],
     ['/orders', t('অর্ডার', 'Orders')],
@@ -355,7 +355,7 @@ export default function CustomerHeader() {
   ]
   const subNav = [
     ['/', t('হোম', 'Home')],
-    ['/products', t('পণ্য', 'Products')],
+    ['/products', t('পণ্যসমূহ', 'Products')],
     ['/offers', t('অফার', 'Offers')],
     ['/track-order', t('ট্র্যাক অর্ডার', 'Track Order')],
     ['/faq', t('জিজ্ঞাসা', 'FAQ')],
@@ -366,7 +366,7 @@ export default function CustomerHeader() {
   ]
 
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 border-b border-slate-200 bg-[#e7f8f6]">
+    <header ref={headerRef} className="sticky top-0 z-50 border-b border-slate-200 bg-[#d7efeb]">
       {offerBar ? (
         <div className={`border-b border-[#9de8e1]/35 bg-[linear-gradient(90deg,#0e6574,#13b8b0)] text-white shadow-[0_10px_30px_-26px_rgba(14,101,116,0.9)] transition-[max-height,opacity,transform] duration-200 ease-out ${isOfferBarHidden ? 'max-h-0 -translate-y-2 overflow-hidden opacity-0' : 'max-h-12 translate-y-0 opacity-100'}`}>
           <div className="mx-auto flex max-w-7xl flex-col items-start gap-2 px-4 py-2 text-xs font-semibold sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-6 sm:text-sm lg:px-8">
@@ -387,7 +387,7 @@ export default function CustomerHeader() {
           </div>          
         </div>
       ) : null}
-      <div className="relative z-50 border-b border-slate-200/80 bg-[linear-gradient(180deg,#f4fffd_0%,#e7f8f6_100%)] backdrop-blur supports-backdrop-filter:bg-[#f4fffd]/78">
+      <div className="relative z-50 border-b border-slate-200/80 bg-[linear-gradient(180deg,#eefaf7_0%,#d7efeb_100%)] backdrop-blur supports-backdrop-filter:bg-[#eefaf7]/82">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-3 px-4 py-3 sm:px-6 lg:flex-nowrap lg:gap-4 lg:px-8 lg:py-4">
           <Link to="/" onClick={closeMenus} className="order-1 shrink-0 lg:order-1" aria-label="My Pharmecy home">
             <CustomerLogo />
@@ -766,7 +766,7 @@ export default function CustomerHeader() {
           </div>
         </div>
 
-        <div className="hidden border-t border-slate-100 bg-[#e7f8f6] lg:block">
+        <div className="hidden border-t border-slate-100 bg-[#d7efeb] lg:block">
           <nav className="mx-auto flex max-w-7xl items-center justify-center gap-6 overflow-x-auto px-4 py-2 text-sm sm:px-6 lg:px-8" aria-label="Storefront links">
             {subNav.map(([to, label]) => {
               const isActive = to === '/' ? location.pathname === '/' : location.pathname.startsWith(to)
@@ -799,7 +799,7 @@ export default function CustomerHeader() {
                     <div className="flex min-w-0 flex-1 items-center gap-3">
                       <UserAvatar customer={customer} fallbackName={avatarName} />
                       <div className="min-w-0 flex-1">
-                        <div className="truncate text-sm font-semibold text-slate-950">{displayCustomerName}</div>
+                        <div className="truncate text-lg font-semibold text-slate-950">{displayCustomerName}</div>
                       </div>
                     </div>
                     <div className="flex shrink-0 items-center gap-2">

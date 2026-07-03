@@ -17,7 +17,7 @@ export default function Support() {
   const aiConfigQuery = useCustomerAiConfigQuery()
   const ticketsQuery = useSupportTicketsQuery({ placeholderData: (previous) => previous })
   const aiSupportDraftEnabled = Boolean(aiConfigQuery.data?.features?.support_assistant)
-  const tickets = useMemo(() => ticketsQuery.data || [], [ticketsQuery.data])
+  const tickets = useMemo(() => (Array.isArray(ticketsQuery.data) ? ticketsQuery.data : []), [ticketsQuery.data])
   const loading = ticketsQuery.isLoading
   const [submitting, setSubmitting] = useState(false)
   const [drafting, setDrafting] = useState(false)

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function HomeHeroSection({ heroSlides, currentSlide, slide, isBangla }) {
   return (
-    <section className="relative overflow-hidden bg-[#052b34] min-h-[420px] sm:min-h-[500px] lg:min-h-[580px] xl:min-h-[640px]">
+    <section className="relative overflow-hidden bg-[#052b34] min-h-105 sm:min-h-125 lg:min-h-145 xl:min-h-160">
       <div className="absolute inset-0">
         {heroSlides.map((item, index) => (
           <img
@@ -20,10 +20,10 @@ export default function HomeHeroSection({ heroSlides, currentSlide, slide, isBan
         <div className="absolute inset-x-0 bottom-0 h-32 bg-[linear-gradient(180deg,rgba(5,34,42,0)_0%,rgba(5,34,42,0.48)_100%)]" />
       </div>
 
-      <div className="relative mx-auto flex min-h-[420px] max-w-7xl items-center px-4 py-12 sm:min-h-[500px] sm:px-6 sm:py-14 lg:min-h-[580px] lg:px-8 lg:py-16 xl:min-h-[640px] xl:py-20">
+      <div className="relative mx-auto flex min-h-105 max-w-7xl items-center px-4 py-12 sm:min-h-125 sm:px-6 sm:py-14 lg:min-h-145 lg:px-8 lg:py-16 xl:min-h-160 xl:py-20">
         <div className="items-end gap-10 lg:flex lg:gap-16 xl:gap-20">
           <div className="max-w-3xl text-white">
-            <div className="inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[#d6fffb] backdrop-blur-sm sm:px-4 sm:py-2 sm:text-[11px] sm:tracking-[0.22em]">
+            <div className="inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.08em] text-[#d6fffb] backdrop-blur-sm sm:px-4 sm:py-2 sm:text-[11px] sm:tracking-widest">
               <span className="inline-flex h-2 w-2 rounded-full bg-[#13b8b0]" />
               {slide?.eyebrow}
             </div>

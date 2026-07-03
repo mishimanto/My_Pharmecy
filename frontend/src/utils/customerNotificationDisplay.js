@@ -11,40 +11,40 @@ const CUSTOMER_NOTIFICATION_LINK_ROOTS = [
 ]
 
 const statusLabelsBn = {
-  pending_confirmation: '\u0995\u09a8\u09ab\u09be\u09b0\u09cd\u09ae\u09c7\u09b6\u09a8\u09c7\u09b0 \u0985\u09aa\u09c7\u0995\u09cd\u09b7\u09be\u09af\u09bc',
-  prescription_review: '\u09aa\u09cd\u09b0\u09c7\u09b8\u0995\u09cd\u09b0\u09bf\u09aa\u09b6\u09a8 \u09b0\u09bf\u09ad\u09bf\u0989\u09a4\u09c7',
-  confirmed: '\u0995\u09a8\u09ab\u09be\u09b0\u09cd\u09ae \u09b9\u09af\u09bc\u09c7\u099b\u09c7',
-  processing: '\u09aa\u09cd\u09b0\u09b8\u09c7\u09b8\u09bf\u0982 \u09b9\u099a\u09cd\u099b\u09c7',
-  delivered: '\u09a1\u09c7\u09b2\u09bf\u09ad\u09be\u09b0 \u09b9\u09af\u09bc\u09c7\u099b\u09c7',
-  cancelled: '\u09ac\u09be\u09a4\u09bf\u09b2 \u09b9\u09af\u09bc\u09c7\u099b\u09c7',
-  returned: '\u09b0\u09bf\u099f\u09be\u09b0\u09cd\u09a8 \u09b9\u09af\u09bc\u09c7\u099b\u09c7',
-  refunded: '\u09b0\u09bf\u09ab\u09be\u09a8\u09cd\u09a1 \u09b9\u09af\u09bc\u09c7\u099b\u09c7',
-  awaiting_proof: '\u09aa\u09c7\u09ae\u09c7\u09a8\u09cd\u099f \u09aa\u09cd\u09b0\u09c1\u09ab\u09c7\u09b0 \u0985\u09aa\u09c7\u0995\u09cd\u09b7\u09be\u09af\u09bc',
-  under_review: '\u09b0\u09bf\u09ad\u09bf\u0989\u09a4\u09c7 \u0986\u099b\u09c7',
-  paid: '\u09aa\u09c7\u0987\u09a1',
-  rejected: '\u09b0\u09bf\u099c\u09c7\u0995\u09cd\u099f\u09c7\u09a1',
-  failed: '\u09ab\u09c7\u0987\u09b2\u09a1',
+  pending_confirmation: 'কনফার্মেশনের অপেক্ষায়',
+  prescription_review: 'প্রেসক্রিপশন রিভিউতে',
+  confirmed: 'কনফার্ম হয়েছে',
+  processing: 'প্রসেসিং হচ্ছে',
+  delivered: 'ডেলিভার হয়েছে',
+  cancelled: 'বাতিল হয়েছে',
+  returned: 'রিটার্ন হয়েছে',
+  refunded: 'রিফান্ড হয়েছে',
+  awaiting_proof: 'পেমেন্ট প্রুফের অপেক্ষায়',
+  under_review: 'রিভিউতে আছে',
+  paid: 'পেইড',
+  rejected: 'রিজেক্টেড',
+  failed: 'ফেইলড',
 }
 
 const customerNotificationTypeLabels = {
-  order_status_update: ['\u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u0986\u09aa\u09a1\u09c7\u099f', 'Order update'],
-  new_order: ['\u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u0986\u09aa\u09a1\u09c7\u099f', 'Order update'],
-  prescription_review: ['\u09aa\u09cd\u09b0\u09c7\u09b8\u0995\u09cd\u09b0\u09bf\u09aa\u09b6\u09a8 \u09b0\u09bf\u09ad\u09bf\u0989', 'Prescription review'],
-  prescription_clarification: ['\u09aa\u09cd\u09b0\u09c7\u09b8\u0995\u09cd\u09b0\u09bf\u09aa\u09b6\u09a8 \u09a4\u09a5\u09cd\u09af \u09aa\u09cd\u09b0\u09af\u09bc\u09cb\u099c\u09a8', 'Prescription clarification'],
-  payment_update: ['\u09aa\u09c7\u09ae\u09c7\u09a8\u09cd\u099f \u0986\u09aa\u09a1\u09c7\u099f', 'Payment update'],
-  support_reply: ['\u09b8\u09be\u09aa\u09cb\u09b0\u09cd\u099f \u09b0\u09bf\u09aa\u09cd\u09b2\u09be\u0987', 'Support reply'],
-  return_status_update: ['\u09b0\u09bf\u099f\u09be\u09b0\u09cd\u09a8 \u0986\u09aa\u09a1\u09c7\u099f', 'Return update'],
-  refund_update: ['\u09b0\u09bf\u09ab\u09be\u09a8\u09cd\u09a1 \u0986\u09aa\u09a1\u09c7\u099f', 'Refund update'],
+  order_status_update: ['অর্ডার আপডেট', 'Order update'],
+  new_order: ['অর্ডার আপডেট', 'Order update'],
+  prescription_review: ['প্রেসক্রিপশন রিভিউ', 'Prescription review'],
+  prescription_clarification: ['প্রেসক্রিপশন তথ্য প্রয়োজন', 'Prescription clarification'],
+  payment_update: ['পেমেন্ট আপডেট', 'Payment update'],
+  support_reply: ['সাপোর্ট রিপ্লাই', 'Support reply'],
+  return_status_update: ['রিটার্ন আপডেট', 'Return update'],
+  refund_update: ['রিফান্ড আপডেট', 'Refund update'],
 }
 
 const customerNotificationTitleLabels = {
-  prescription_clarification: ['\u09aa\u09cd\u09b0\u09c7\u09b8\u0995\u09cd\u09b0\u09bf\u09aa\u09b6\u09a8 \u09a8\u09bf\u09af\u09bc\u09c7 \u0986\u09b0\u0993 \u09a4\u09a5\u09cd\u09af \u09aa\u09cd\u09b0\u09af\u09bc\u09cb\u099c\u09a8', 'Prescription clarification needed'],
-  prescription_review: ['\u09aa\u09cd\u09b0\u09c7\u09b8\u0995\u09cd\u09b0\u09bf\u09aa\u09b6\u09a8 \u09b0\u09bf\u09ad\u09bf\u0989 \u0986\u09aa\u09a1\u09c7\u099f', 'Prescription review update'],
-  order_status_update: ['\u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u09b8\u09cd\u099f\u09cd\u09af\u09be\u099f\u09be\u09b8 \u0986\u09aa\u09a1\u09c7\u099f', 'Order status updated'],
-  new_order: ['\u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u0997\u09cd\u09b0\u09b9\u09a3 \u09b9\u09af\u09bc\u09c7\u099b\u09c7', 'Order received'],
-  support_reply: ['\u09b8\u09be\u09aa\u09cb\u09b0\u09cd\u099f \u099f\u09bf\u0995\u09bf\u099f\u09c7 \u09b0\u09bf\u09aa\u09cd\u09b2\u09be\u0987 \u0986\u09b8\u09c7\u099b\u09c7', 'Support reply received'],
-  return_status_update: ['\u09b0\u09bf\u099f\u09be\u09b0\u09cd\u09a8 \u09b8\u09cd\u099f\u09cd\u09af\u09be\u099f\u09be\u09b8 \u0986\u09aa\u09a1\u09c7\u099f', 'Return status updated'],
-  refund_update: ['\u09b0\u09bf\u09ab\u09be\u09a8\u09cd\u09a1 \u0986\u09aa\u09a1\u09c7\u099f', 'Refund updated'],
+  prescription_clarification: ['প্রেসক্রিপশন নিয়ে আরও তথ্য প্রয়োজন', 'Prescription clarification needed'],
+  prescription_review: ['প্রেসক্রিপশন রিভিউ আপডেট', 'Prescription review update'],
+  order_status_update: ['অর্ডার স্ট্যাটাস আপডেট', 'Order status updated'],
+  new_order: ['অর্ডার গ্রহণ হয়েছে', 'Order received'],
+  support_reply: ['সাপোর্ট টিকিটে রিপ্লাই এসেছে', 'Support reply received'],
+  return_status_update: ['রিটার্ন স্ট্যাটাস আপডেট', 'Return status updated'],
+  refund_update: ['রিফান্ড আপডেট', 'Refund updated'],
 }
 
 function labelStatus(value) {
@@ -110,7 +110,7 @@ function cleanEnglishMessage(rawMessage) {
 }
 
 export function getCustomerNotificationTypeLabel(type, isBangla = false) {
-  const labels = customerNotificationTypeLabels[type] || ['\u09a8\u09cb\u099f\u09bf\u09ab\u09bf\u0995\u09c7\u09b6\u09a8', 'Notification']
+  const labels = customerNotificationTypeLabels[type] || ['নোটিফিকেশন', 'Notification']
   return isBangla ? labels[0] : labels[1]
 }
 
@@ -121,8 +121,8 @@ export function getCustomerNotificationTitle(notification, isBangla = false) {
   if (item.notification_type === 'payment_update') {
     if (isBangla) {
       return /verified/i.test(rawTitle)
-        ? '\u09aa\u09c7\u09ae\u09c7\u09a8\u09cd\u099f \u09af\u09be\u099a\u09be\u0987 \u09b9\u09af\u09bc\u09c7\u099b\u09c7'
-        : '\u09aa\u09c7\u09ae\u09c7\u09a8\u09cd\u099f \u0986\u09aa\u09a1\u09c7\u099f'
+        ? 'পেমেন্ট যাচাই হয়েছে'
+        : 'পেমেন্ট আপডেট'
     }
 
     return rawTitle || 'Payment update'
@@ -195,29 +195,29 @@ export function getCustomerNotificationMessage(notification, isBangla = false) {
 
   if (isBangla && orderNumber) {
     if (/payment for .* has been verified/i.test(rawMessage)) {
-      return `\u0986\u09aa\u09a8\u09be\u09b0 ${orderNumber} \u0985\u09b0\u09cd\u09a1\u09be\u09b0\u09c7\u09b0 \u09aa\u09c7\u09ae\u09c7\u09a8\u09cd\u099f \u09af\u09be\u099a\u09be\u0987 \u09b9\u09af\u09bc\u09c7\u099b\u09c7\u0964`
+      return `আপনার ${orderNumber} অর্ডারের পেমেন্ট যাচাই হয়েছে।`
     }
 
     const paymentStatus = rawMessage.match(/payment status is now ([a-z_]+)/i)?.[1]
     if (paymentStatus) {
-      return `\u0986\u09aa\u09a8\u09be\u09b0 ${orderNumber} \u0985\u09b0\u09cd\u09a1\u09be\u09b0\u09c7\u09b0 \u09aa\u09c7\u09ae\u09c7\u09a8\u09cd\u099f \u09b8\u09cd\u099f\u09cd\u09af\u09be\u099f\u09be\u09b8 \u098f\u0996\u09a8 ${labelStatus(paymentStatus)}\u0964`
+      return `আপনার ${orderNumber} অর্ডারের পেমেন্ট স্ট্যাটাস এখন ${labelStatus(paymentStatus)}।`
     }
 
     const orderStatus = rawMessage.match(/order .* is now ([a-z_]+)/i)?.[1]
     if (orderStatus) {
-      return `\u0986\u09aa\u09a8\u09be\u09b0 ${orderNumber} \u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u098f\u0996\u09a8 ${labelStatus(orderStatus)}\u0964`
+      return `আপনার ${orderNumber} অর্ডার এখন ${labelStatus(orderStatus)}।`
     }
 
     if (/has been confirmed/i.test(rawMessage)) {
-      return `\u0986\u09aa\u09a8\u09be\u09b0 ${orderNumber} \u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u0995\u09a8\u09ab\u09be\u09b0\u09cd\u09ae \u09b9\u09af\u09bc\u09c7\u099b\u09c7\u0964`
+      return `আপনার ${orderNumber} অর্ডার কনফার্ম হয়েছে।`
     }
 
     if (/has been cancelled/i.test(rawMessage)) {
-      return `\u0986\u09aa\u09a8\u09be\u09b0 ${orderNumber} \u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u09ac\u09be\u09a4\u09bf\u09b2 \u09b9\u09af\u09bc\u09c7\u099b\u09c7\u0964`
+      return `আপনার ${orderNumber} অর্ডার বাতিল হয়েছে।`
     }
 
     if (/waiting for confirmation/i.test(rawMessage)) {
-      return `\u0986\u09aa\u09a8\u09be\u09b0 ${orderNumber} \u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u0995\u09a8\u09ab\u09be\u09b0\u09cd\u09ae\u09c7\u09b6\u09a8\u09c7\u09b0 \u0985\u09aa\u09c7\u0995\u09cd\u09b7\u09be\u09af\u09bc \u0986\u099b\u09c7\u0964`
+      return `আপনার ${orderNumber} অর্ডার কনফার্মেশনের অপেক্ষায় আছে।`
     }
   }
 

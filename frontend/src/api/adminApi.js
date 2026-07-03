@@ -46,6 +46,8 @@ export const adminApi = {
   dashboardPendingPrescriptions: () => cachedGet('/admin/dashboard/pending-prescriptions', undefined, { fresh: true }),
   dashboardLowStock: () => cachedGet('/admin/dashboard/low-stock', undefined, { fresh: true }),
   dashboardNearExpiry: () => cachedGet('/admin/dashboard/near-expiry', undefined, { fresh: true }),
+  productSummary: () => cachedGet('/admin/products/summary', undefined, { fresh: true }),
+  productOptions: (params) => cachedGet('/admin/products/options', params, { fresh: true }),
   securitySummary: () => cachedGet('/admin/security/summary', undefined, { fresh: true }),
   loginHistory: (params) => cachedGet('/admin/security/login-history', params, { fresh: true }),
   updateTwoFactor: (payload) => clearAfter(api.patch('/admin/security/2fa', payload)),
@@ -108,7 +110,12 @@ export const adminApi = {
   },
   patch: (resource, id, action, payload) => clearAfter(api.patch(`/admin/${resource}/${id}/${action}`, payload), { storefrontCatalog: touchesStorefrontCatalog(resource) }),
   remove: (resource, id) => clearAfter(api.delete(`/admin/${resource}/${id}`), { storefrontCatalog: touchesStorefrontCatalog(resource) }),
-  uploadProductImages: (id, payload) => clearAfter(api.put(`/admin/products/${id}/images`, payload), { storefrontCatalog: true }),
+  uploadProductImages: (id, payload) => clearAfter(
+    api.put(`/admin/products/${id}/images`, payload, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
+    { storefrontCatalog: true },
+  ),
   uploadProductImageChunk: (id, params) => api.get(`/admin/products/${id}/images/chunk`, { params }),
   deleteProductImage: (id) => clearAfter(api.delete(`/admin/product-images/${id}`), { storefrontCatalog: true }),
   generateProductDescriptionDraft: (id) => clearAfter(api.post(`/admin/products/${id}/description-draft`), { storefrontCatalog: true }),

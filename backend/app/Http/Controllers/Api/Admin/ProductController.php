@@ -18,6 +18,48 @@ class ProductController extends Controller
 {
     use ApiResponse;
 
+    public function summary()
+    {
+        $baseQuery = Product::query();
+
+        return $this->ok([
+            'total' => (clone $baseQuery)->count(),
+            'active' => (clone $baseQuery)->where('is_active', true)->count(),
+            'prescription' => (clone $baseQuery)->where('requires_prescription', true)->count(),
+            'inactive' => (clone $baseQuery)->where('is_active', false)->count(),
+        ], 'Product summary retrieved.');
+    }
+
+    public function options(Request $request)
+    {
+        $limit = min(max($request->integer('limit', 300), 1), 1000);
+        $type = $request->input('product_type');
+        $search = trim((string) $request->input('search', ''));
+        $excludeId = $request->integer('exclude_id');
+        $ids = collect(explode(',', (string) $request->input('ids', '')))
+            ->map(fn ($value) => (int) trim($value))
+            ->filter(fn ($value) => $value > 0)
+            ->unique()
+            ->values();
+
+        $products = Product::query()
+            ->select(['id', 'product_name', 'generic_name', 'product_type'])
+            ->when($type, fn ($query, $value) => $query->where('product_type', $value))
+            ->when($excludeId > 0, fn ($query) => $query->whereKeyNot($excludeId))
+            ->when($search !== '', fn ($query) => $query->where(function ($inner) use ($search) {
+                $inner
+                    ->where('product_name', 'like', "%{$search}%")
+                    ->orWhere('generic_name', 'like', "%{$search}%")
+                    ->orWhere('brand_name', 'like', "%{$search}%");
+            }))
+            ->when($ids->isNotEmpty(), fn ($query) => $query->orWhereIn('id', $ids->all()))
+            ->orderBy('product_name')
+            ->limit($limit)
+            ->get();
+
+        return $this->ok($products, 'Product options retrieved.');
+    }
+
     public function index(Request $request)
     {
         $products = Product::query()
@@ -174,7 +216,7 @@ class ProductController extends Controller
         $data = $request->validate([
             'category_id' => ['required', 'exists:categories,id'],
             'manufacturer_id' => ['required', 'exists:manufacturers,id'],
-            'product_type' => ['nullable', 'in:medicine,healthcare,device,personal_care,beauty,baby_care'],
+            'product_type' => ['nullable', 'in:medicine,healthcare,device,personal_care,beauty,baby_care,other'],
             'product_name' => ['required', 'string', 'max:255'],
             'generic_name' => ['nullable', 'string', 'max:255'],
             'brand_name' => ['nullable', 'string', 'max:255'],

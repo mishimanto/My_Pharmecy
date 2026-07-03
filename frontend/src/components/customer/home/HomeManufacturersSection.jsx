@@ -67,7 +67,7 @@ export default function HomeManufacturersSection({ isBangla, manufacturerHighlig
             <div className="min-w-0 flex-1">
               <HomeSectionHeader
                 eyebrow={isBangla ? 'প্রস্তুতকারক' : 'Manufacturers'}
-                title={isBangla ? 'বিশ্বস্ত প্রস্তুতকারক' : 'Trusted Manufacturers'}
+                title={isBangla ? 'বিশ্বস্ত ব্রান্ডস' : 'Trusted Brands'}
                 subtitle={
                   isBangla
                     ? 'বিশ্বস্ত প্রস্তুতকারকের পণ্য সহজেই খুঁজে নিন।'

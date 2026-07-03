@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import { FiActivity, FiAlertTriangle, FiCheckCircle, FiCpu, FiRefreshCw, FiSearch, FiSettings, FiZap } from 'react-icons/fi'
 import { adminApi } from '../../api/adminApi'
 import AdminLoadingState from '../../components/admin/AdminLoadingState'
+import AdminPagination from '../../components/admin/AdminPagination'
 import AdminStatCard from '../../components/admin/AdminStatCard'
 import EmptyState from '../../components/common/EmptyState'
 import { date } from '../../utils/formatters'
@@ -376,29 +377,11 @@ export default function AiCenter() {
       ) : null}
 
       {interactions?.last_page > 1 ? (
-        <div className="mt-4 flex items-center justify-between border border-slate-200 bg-white px-4 py-3 text-sm">
-          <span className="text-slate-500">
-            Page {interactions.current_page} of {interactions.last_page}
-          </span>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              disabled={interactions.current_page <= 1}
-              onClick={() => setParams((current) => ({ ...current, page: current.page - 1 }))}
-              className="border border-slate-300 px-3 py-2 font-semibold text-slate-600 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <button
-              type="button"
-              disabled={interactions.current_page >= interactions.last_page}
-              onClick={() => setParams((current) => ({ ...current, page: current.page + 1 }))}
-              className="border border-slate-300 px-3 py-2 font-semibold text-slate-600 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        </div>
+        <AdminPagination
+          currentPage={interactions.current_page}
+          lastPage={interactions.last_page}
+          onPageChange={(nextPage) => setParams((current) => ({ ...current, page: nextPage }))}
+        />
       ) : null}
     </>
   )

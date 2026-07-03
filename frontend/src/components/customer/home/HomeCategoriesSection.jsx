@@ -43,7 +43,7 @@ export default function HomeCategoriesSection({ categories }) {
               </div>
             </div>
 
-            <h3 className="mt-2 line-clamp-2 text-center text-[11px] font-bold leading-4 text-[#07343d] transition group-hover:text-[#0e6574] sm:text-xs lg:text-[13px]">
+            <h3 className="mt-1 line-clamp-2 text-center text-[11px] font-bold leading-4 text-[#07343d] transition group-hover:text-[#0e6574] sm:text-xs lg:text-[13px]">
               {getCategoryName(category, isBangla)}
             </h3>
           </Link>

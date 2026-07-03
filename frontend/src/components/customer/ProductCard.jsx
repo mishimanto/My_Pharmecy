@@ -30,7 +30,7 @@ export default function ProductCard({ product, onAdd, compact = false }) {
     product?.active_offer?.title
 
   const imageLinkClass = compact
-    ? 'flex h-28 w-full items-center justify-center overflow-hidden sm:h-[8.5rem] lg:h-36'
+    ? 'flex h-40 w-full items-center justify-center overflow-hidden sm:h-[8.8rem] lg:h-44'
     : 'flex h-44 w-full items-center justify-center overflow-hidden sm:h-48'
   const bodyClass = compact
     ? 'flex flex-1 flex-col bg-[linear-gradient(180deg,#dbeafe_0%,#ccfbf1_100%)] p-2.5 sm:p-3'
@@ -130,25 +130,25 @@ export default function ProductCard({ product, onAdd, compact = false }) {
           </Link>
         </div>
 
-        <div className="mt-auto pt-3 sm:pt-4">
-          <div className="flex items-end justify-between gap-2 border-t border-[#7dd3fc]/45 pt-2.5 sm:gap-3 sm:pt-3">
-            <div className="min-h-[1.75rem]">
+        <div className="mt-auto pt-1.5 sm:pt-2">
+          <div className="flex items-end justify-between gap-2 border-t border-[#7dd3fc]/45 pt-1.5 sm:gap-3 sm:pt-2">
+            <div className="min-h-7">
               {requiresPrescription ? (
                 <span className="group/rx relative inline-flex">
                   <span
                     tabIndex={0}
                     className="inline-flex items-center justify-center rounded-full border border-rose-200 bg-rose-50 px-2 py-0.75 text-rose-700 sm:px-2.5 sm:py-1"
-                    aria-label={isBangla ? '\u098f\u0987 \u09aa\u09a3\u09cd\u09af\u09c7\u09b0 \u099c\u09a8\u09cd\u09af \u09aa\u09cd\u09b0\u09c7\u09b8\u0995\u09cd\u09b0\u09bf\u09aa\u09b6\u09a8 \u09aa\u09cd\u09b0\u09af\u09bc\u09cb\u099c\u09a8' : 'This product requires a prescription'}
+                    aria-label={isBangla ? 'এই পণ্যের জন্য প্রেসক্রিপশন প্রয়োজন' : 'This product requires a prescription'}
                   >
                     <PiPrescriptionBold className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </span>
 
                   <span className="pointer-events-none absolute bottom-[calc(100%+0.55rem)] left-0 z-30 w-56 translate-y-1 border border-slate-200 bg-white p-3 text-left text-xs leading-5 text-slate-600 opacity-0 shadow-[0_18px_48px_-28px_rgba(15,23,42,0.35)] transition duration-200 group-hover/rx:translate-y-0 group-hover/rx:opacity-100 group-focus-within/rx:translate-y-0 group-focus-within/rx:opacity-100">
                     <span className="block text-sm font-semibold text-slate-950">
-                      {isBangla ? '\u098f\u0987 \u09aa\u09a3\u09cd\u09af\u09c7\u09b0 \u099c\u09a8\u09cd\u09af \u09aa\u09cd\u09b0\u09c7\u09b8\u0995\u09cd\u09b0\u09bf\u09aa\u09b6\u09a8 \u09aa\u09cd\u09b0\u09af\u09bc\u09cb\u099c\u09a8' : 'This medicine requires a prescription'}
+                      {isBangla ? 'এই পণ্যের জন্য প্রেসক্রিপশন প্রয়োজন' : 'This medicine requires a prescription'}
                     </span>
                     <span className="mt-1 block">
-                      {isBangla ? '\u09aa\u09cd\u09b0\u09c7\u09b8\u0995\u09cd\u09b0\u09bf\u09aa\u09b6\u09a8 \u09a8\u09be \u09a5\u09be\u0995\u09b2\u09c7 \u0986\u0997\u09c7 \u0986\u09aa\u09b2\u09cb\u09a1 \u0995\u09b0\u09c7 \u09a4\u09be\u09b0\u09aa\u09b0 \u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u0995\u09b0\u09c1\u09a8\u0964' : 'Upload a prescription first, then continue with the order.'}
+                      {isBangla ? 'প্রেসক্রিপশন না থাকলে আগে আপলোড করে তারপর অর্ডার করুন।' : 'Upload a prescription first, then continue with the order.'}
                     </span>
                     <span className="absolute left-4 top-full h-3 w-3 -translate-y-1/2 rotate-45 border-r border-b border-slate-200 bg-white" />
                   </span>
@@ -195,4 +195,3 @@ export function ProductCardSkeleton({ compact = false }) {
     </div>
   )
 }
-

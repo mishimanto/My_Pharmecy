@@ -545,8 +545,8 @@ export default function Checkout() {
                   onChange={() => {}}
                   readOnly
                 />
-                <CheckoutField label={t('ঠিকানা লাইন 1', 'Address line 1')} value={guestAddress.address_line_1} onChange={(value) => setGuestField('address_line_1', value)} required className="md:col-span-2" />
-                <CheckoutField label={t('ঠিকানা লাইন 2', 'Address line 2')} value={guestAddress.address_line_2} onChange={(value) => setGuestField('address_line_2', value)} className="md:col-span-2" />
+                <CheckoutField label={t('ঠিকানা লাইন ১', 'Address line 1')} value={guestAddress.address_line_1} onChange={(value) => setGuestField('address_line_1', value)} required className="md:col-span-2" />
+                <CheckoutField label={t('ঠিকানা লাইন ২', 'Address line 2')} value={guestAddress.address_line_2} onChange={(value) => setGuestField('address_line_2', value)} className="md:col-span-2" />
                 <CheckoutField label={t('পোস্টাল কোড', 'Postal code')} value={guestAddress.postal_code} onChange={(value) => setGuestField('postal_code', value)} className="md:col-span-2" />
               </div>
             )}
@@ -566,7 +566,7 @@ export default function Checkout() {
                 </div>
                 {customer ? (
                   <div className="flex-1">
-                    <p className="text-sm font-semibold uppercase tracking-[0.18em] text-amber-700">{t(
+                    <p className="text-sm font-semibold uppercase tracking-[0.05em] text-amber-700">{t(
                       'অর্ডারটি সম্পন্ন করতে একটি অনুমোদিত প্রেসক্রিপশন সংযুক্ত করুন',
                       'Attach an approved prescription to complete this order'
                     )}</p>

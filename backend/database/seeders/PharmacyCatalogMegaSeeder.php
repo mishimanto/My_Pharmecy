@@ -34,7 +34,7 @@ class PharmacyCatalogMegaSeeder extends Seeder
     private function seedCategories($now): array
     {
         $categories = [
-            ['category_name' => 'Pain Relief', 'category_name_bn' => 'ব্যথা ও জ্বর', 'description' => 'Pain, fever, headache, and body ache relief medicines.'],
+            ['category_name' => 'Pain Relief', 'category_name_bn' => 'ব্যথা নিরাময়', 'description' => 'Pain, fever, headache, and body ache relief medicines.'],
             ['category_name' => 'Gastric Care', 'category_name_bn' => 'গ্যাস্ট্রিক কেয়ার', 'description' => 'Acidity, reflux, ulcer protection, and antacid medicines.'],
             ['category_name' => 'Respiratory & Allergy', 'category_name_bn' => 'শ্বাসতন্ত্র ও অ্যালার্জি', 'description' => 'Cold, cough, allergy, inhaler, and breathing support products.'],
             ['category_name' => 'Antibiotics & Infection', 'category_name_bn' => 'অ্যান্টিবায়োটিক ও সংক্রমণ', 'description' => 'Prescription antibiotics and infection management products.'],

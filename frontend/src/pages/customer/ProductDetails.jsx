@@ -308,10 +308,6 @@ export default function ProductDetails() {
           activeUnitLabel ||
           t('উল্লেখ নেই', 'Not specified'),
       },
-      {
-        label: t('ব্যাচ নম্বর', 'Batch Number'),
-        value: batch?.batch_number || t('সক্রিয়', 'Active'),
-      },
     ]
 
   const add = async () => {

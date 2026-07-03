@@ -75,7 +75,7 @@ class HeroSlideShowcaseSeeder extends Seeder
             [
                 'sort_order' => 5,
                 'eyebrow' => 'Fast pharmacy workflow',
-                'eyebrow_bn' => 'দ্রুত ফার্মেসি workflow',
+                'eyebrow_bn' => 'দ্রুত কাজের প্রক্রিয়া',
                 'title' => 'Search, compare, and place your order with clean pharmacy-ready navigation.',
                 'title_bn' => 'সহজ pharmacy-ready navigation দিয়ে সার্চ করুন, তুলনা করুন, আর অর্ডার দিন।',
                 'primary_label' => 'Start shopping',
@@ -92,7 +92,7 @@ class HeroSlideShowcaseSeeder extends Seeder
                 'eyebrow' => 'Dhaka delivery coverage',
                 'eyebrow_bn' => 'ঢাকা জুড়ে ডেলিভারি',
                 'title' => 'From prescription review to doorstep delivery, everything stays in one flow.',
-                'title_bn' => 'প্রেসক্রিপশন রিভিউ থেকে বাসায় ডেলিভারি, সবকিছুই থাকে এক flow-এ।',
+                'title_bn' => 'প্রেসক্রিপশন রিভিউ থেকে বাসায় ডেলিভারি, সবকিছুই থাকে এক ফ্লোতে।',
                 'primary_label' => 'Order now',
                 'primary_label_bn' => 'অর্ডার করুন',
                 'primary_url' => '/products',

@@ -239,6 +239,8 @@ Route::prefix('admin')->group(function () {
         Route::delete('/manufacturers/{id}', [ManufacturerController::class, 'destroy'])->middleware(['permission:product.delete', 'sensitive.confirm']);
 
         Route::get('/products', [ProductController::class, 'index'])->middleware('permission:product.view');
+        Route::get('/products/summary', [ProductController::class, 'summary'])->middleware('permission:product.view');
+        Route::get('/products/options', [ProductController::class, 'options'])->middleware('permission:product.view');
         Route::post('/products', [ProductController::class, 'store'])->middleware('permission:product.create');
         Route::get('/products/{id}', [ProductController::class, 'show'])->middleware('permission:product.view');
         Route::put('/products/{id}', [ProductController::class, 'update'])->middleware('permission:product.edit');

@@ -8,6 +8,7 @@ import { LuMailOpen } from "react-icons/lu";
 import { notificationApi } from '../../api/notificationApi'
 import AdminFilterBar from '../../components/admin/AdminFilterBar'
 import AdminLoadingState from '../../components/admin/AdminLoadingState'
+import AdminPagination from '../../components/admin/AdminPagination'
 import AdminStatCard from '../../components/admin/AdminStatCard'
 import EmptyState from '../../components/common/EmptyState'
 import { adminQueryKeys } from '../../queries/adminQueries'
@@ -437,25 +438,11 @@ export default function AdminNotifications() {
       ) : null}
 
       {meta?.last_page > 1 ? (
-        <div className="mt-4 flex flex-col gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
-          <span>Page {meta.current_page || params.page} / {meta.last_page}</span>
-          <div className="flex justify-end gap-2">
-            <button
-              disabled={params.page <= 1}
-              onClick={() => setParams({ ...params, page: params.page - 1 })}
-              className="rounded-md border border-slate-300 px-3 py-1 font-medium transition hover:border-teal-300 hover:text-teal-700 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Previous
-            </button>
-            <button
-              disabled={params.page >= meta.last_page}
-              onClick={() => setParams({ ...params, page: params.page + 1 })}
-              className="rounded-md border border-slate-300 px-3 py-1 font-medium transition hover:border-teal-300 hover:text-teal-700 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        </div>
+        <AdminPagination
+          currentPage={meta.current_page || params.page}
+          lastPage={meta.last_page}
+          onPageChange={(nextPage) => setParams({ ...params, page: nextPage })}
+        />
       ) : null}
     </>
   )

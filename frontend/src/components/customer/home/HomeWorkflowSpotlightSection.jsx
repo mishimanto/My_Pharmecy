@@ -6,6 +6,14 @@ import { handleImageFallback } from '../../../utils/imageUrl'
 import { getProductPath } from '../../../utils/productRouting'
 import { getProductImage } from './homeUtils'
 
+const bnCopy = {
+  featuredAlt: 'নির্বাচিত পণ্য',
+  featuredBadge: 'ফিচার্ড পণ্য',
+  popularProduct: 'জনপ্রিয় পণ্য',
+  viewProduct: 'পণ্য দেখুন',
+  howToOrder: 'কীভাবে অর্ডার করবেন',
+}
+
 export default function HomeWorkflowSpotlightSection({
   isBangla,
   spotlightProducts = [],
@@ -57,18 +65,18 @@ export default function HomeWorkflowSpotlightSection({
           <div className="relative h-full min-h-72 sm:min-h-88 lg:min-h-96">
             <img
               src={spotlightImage}
-              alt={spotlightProduct?.product_name || (isBangla ? '\u09a8\u09bf\u09b0\u09cd\u09ac\u09be\u099a\u09bf\u09a4 \u09aa\u09a3\u09cd\u09af' : 'Featured product')}
+              alt={spotlightProduct?.product_name || (isBangla ? bnCopy.featuredAlt : 'Featured product')}
               className="absolute inset-0 h-full w-full object-cover"
               onError={handleImageFallback}
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.08),rgba(15,23,42,0.8))]" />
-            <div className="relative flex h-full min-h-[18rem] flex-col justify-end p-5 text-white sm:min-h-[22rem] sm:p-6 lg:min-h-96 lg:p-7">
+            <div className="relative flex h-full min-h-72 flex-col justify-end p-5 text-white sm:min-h-88 sm:p-6 lg:min-h-96 lg:p-7">
               <div className={`transition-opacity duration-500 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
                 <div className="inline-flex items-center border border-white/12 bg-white/8 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-[#d6fffb]">
-                  {isBangla ? '\u09ab\u09bf\u099a\u09be\u09b0\u09cd\u09a1 \u09aa\u09a3\u09cd\u09af' : 'Featured product'}
+                  {isBangla ? bnCopy.featuredBadge : 'Featured product'}
                 </div>
                 <h3 className="mt-3 max-w-md text-2xl font-bold tracking-tight sm:text-3xl">
-                  {spotlightProduct?.product_name || (isBangla ? '\u099c\u09a8\u09aa\u09cd\u09b0\u09bf\u09df \u09aa\u09a3\u09cd\u09af' : 'Popular product')}
+                  {spotlightProduct?.product_name || (isBangla ? bnCopy.popularProduct : 'Popular product')}
                 </h3>
 
                 {spotlightProduct ? (
@@ -81,7 +89,7 @@ export default function HomeWorkflowSpotlightSection({
                       state={{ product: spotlightProduct }}
                       className="inline-flex items-center gap-2 bg-white px-4 py-2.5 text-sm font-bold text-slate-950 transition hover:bg-slate-100"
                     >
-                      {isBangla ? '\u09aa\u09a3\u09cd\u09af \u09a6\u09c7\u0996\u09c1\u09a8' : 'View product'}
+                      {isBangla ? bnCopy.viewProduct : 'View product'}
                       <FiArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
@@ -95,7 +103,7 @@ export default function HomeWorkflowSpotlightSection({
           <div className="border border-[#d8ece9] bg-white p-4 shadow-lg sm:p-5 lg:p-6">
             <div className="mb-6 text-center sm:mb-8">
               <h2 className="text-lg font-bold text-[#07343d] sm:text-xl">
-                {isBangla ? '\u0995\u09c0\u09ad\u09be\u09ac\u09c7 \u0985\u09b0\u09cd\u09a1\u09be\u09b0 \u0995\u09b0\u09ac\u09c7\u09a8' : 'How to order'}
+                {isBangla ? bnCopy.howToOrder : 'How to order'}
               </h2>
             </div>
 

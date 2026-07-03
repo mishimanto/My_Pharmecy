@@ -7,6 +7,7 @@ import { FiAlertCircle, FiCheckCircle, FiClock, FiFileText } from 'react-icons/f
 import EmptyState from '../../components/common/EmptyState'
 import { adminApi } from '../../api/adminApi'
 import AdminLoadingState from '../../components/admin/AdminLoadingState'
+import AdminPagination from '../../components/admin/AdminPagination'
 import AdminStatCard from '../../components/admin/AdminStatCard'
 import { date } from '../../utils/formatters'
 
@@ -190,15 +191,13 @@ export default function Prescriptions() {
           </table>
         </div>
       )}
-      {meta?.last_page > 1 && (
-        <div className="mt-4 flex flex-col gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
-          <span>Page {meta.current_page || page} / {meta.last_page}</span>
-          <div className="flex justify-end gap-2">
-            <button className="rounded-md border border-slate-300 px-3 py-1 font-medium transition hover:border-emerald-300 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50" disabled={page <= 1} onClick={() => setPage(page - 1)}>Previous</button>
-            <button className="rounded-md border border-slate-300 px-3 py-1 font-medium transition hover:border-emerald-300 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50" disabled={meta.current_page >= meta.last_page} onClick={() => setPage(page + 1)}>Next</button>
-          </div>
-        </div>
-      )}
+      {meta?.last_page > 1 ? (
+        <AdminPagination
+          currentPage={meta.current_page || page}
+          lastPage={meta.last_page}
+          onPageChange={setPage}
+        />
+      ) : null}
     </>
   )
 }

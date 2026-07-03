@@ -154,7 +154,7 @@ export default function Addresses() {
                 checked={form.is_default}
                 onChange={(event) => setForm({ ...form, is_default: event.target.checked })}
               />
-              {t('ডিফল্ট ঠিকানা হিসেবে সেট করুন', 'Set as default address')}
+              {t('ডিফল্ট ঠিকানা', 'Default address')}
             </label>
           </div>
 

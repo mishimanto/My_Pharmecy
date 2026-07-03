@@ -81,7 +81,7 @@ function CategoryRow({ isBangla, loading, row, onAdd }) {
         {!loading ? (
           <Link
             to={row.href}
-            className="shrink-0 text-sm font-bold text-[#0b5d68] transition hover:text-[#13b8b0]"
+            className="shrink-0 text-sm font-bold underline text-[#0b5d68] transition hover:text-[#08a5a2]"
           >
             {isBangla ? 'সব দেখুন' : 'See All'}
           </Link>

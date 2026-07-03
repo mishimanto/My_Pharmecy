@@ -224,8 +224,60 @@ export default function Cart() {
                 const image = resolveImageUrl(item.thumbnail_url || item.image_url)
 
                 return (
-                  <div key={item.cart_item_id} className="grid grid-cols-[70px_minmax(0,1fr)] gap-3 border-b border-slate-200 p-3 last:border-b-0 sm:p-5 lg:grid-cols-[84px_1fr_160px_140px] lg:items-center lg:gap-5">
-                    <div className="overflow-hidden border border-slate-200 bg-slate-50">
+                  <div key={item.cart_item_id} className="border-b border-slate-200 p-3 last:border-b-0 sm:p-4 lg:grid lg:grid-cols-[84px_1fr_160px_140px] lg:items-center lg:gap-5 lg:p-5">
+                    <div className="flex gap-3 sm:gap-4 lg:hidden">
+                      <div className="h-19 w-18 shrink-0 overflow-hidden border border-slate-200 bg-slate-50 sm:h-23 sm:w-21">
+                        {image ? (
+                          <OptimizedImage className="h-full w-full object-cover" src={image} alt={cartItemProductName(item)} onError={handleImageFallback} />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-xs font-semibold uppercase tracking-[0.14em] text-slate-400">Rx</div>
+                        )}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2">
+                              <h2 className="line-clamp-2 text-sm font-semibold leading-5 text-slate-950 sm:text-base">{cartItemProductName(item)}</h2>
+                              {item.requires_prescription ? (
+                                <span
+                                  className="inline-flex items-center justify-center rounded-full border border-rose-200 bg-rose-50 px-2 py-0.5 text-rose-700"
+                                  aria-label={t('এই পণ্যের জন্য প্রেসক্রিপশন প্রয়োজন', 'This product requires a prescription')}
+                                >
+                                  <PiPrescriptionBold className="h-3.5 w-3.5" />
+                                </span>
+                              ) : null}
+                            </div>
+                            <p className="mt-0.5 line-clamp-2 text-xs leading-5 text-slate-500 sm:text-sm">{cartItemGenericName(item) || '-'} {item.strength || ''} {item.dosage_form || ''}</p>
+                            <div className="mt-1.5 flex items-center gap-1.5 sm:gap-2">
+                              <button className="flex h-7 w-7 items-center justify-center border border-slate-300 bg-white text-sm text-slate-900 sm:h-10 sm:w-10 sm:text-lg" disabled={updatingId === item.cart_item_id} onClick={() => updateQuantity(item, item.quantity - 1)}>
+                                <FiMinus />
+                              </button>
+                              <input
+                                inputMode="numeric"
+                                className="h-7 w-12 border border-slate-300 bg-white text-center text-sm text-slate-900 outline-none sm:h-10 sm:w-16"
+                                value={formatNumber(item.quantity)}
+                                onChange={(event) => updateQuantity(item, parseNumber(event.target.value))}
+                              />
+                              <button className="flex h-7 w-7 items-center justify-center border border-slate-300 bg-white text-sm text-slate-900 sm:h-10 sm:w-10 sm:text-lg" disabled={updatingId === item.cart_item_id || item.quantity >= item.available_quantity} onClick={() => updateQuantity(item, item.quantity + 1)}>
+                                <FiPlus />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="shrink-0 text-right">
+                            <div className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-400 sm:text-[11px]">{t('সাবটোটাল', 'Subtotal')}</div>
+                            <div className="mt-1 text-base font-semibold leading-none text-slate-950 sm:text-xl">{formatMoney(item.subtotal)}</div>
+                            <div className="mt-1 text-[11px] text-slate-500 sm:text-xs">{formatMoney(item.unit_price)} / {cartItemUnitLabel(item)}</div>
+                            <button className="mt-2 text-[11px] font-medium text-rose-600 underline underline-offset-2 sm:text-sm" onClick={() => remove(item)}>
+                              {t('সরান', 'Remove')}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="hidden overflow-hidden border border-slate-200 bg-slate-50 lg:block">
                       {image ? (
                         <OptimizedImage className="h-18 w-full object-cover sm:h-21" src={image} alt={cartItemProductName(item)} onError={handleImageFallback} />
                       ) : (
@@ -233,8 +285,8 @@ export default function Cart() {
                       )}
                     </div>
 
-                    <div className="min-w-0">
-                      <div className="flex items-start justify-between gap-2">
+                    <div className="hidden min-w-0 lg:block">
+                      <div className="flex items-center gap-3">
                         <h2 className="line-clamp-1 text-sm font-semibold leading-5 text-slate-950 sm:text-lg">{cartItemProductName(item)}</h2>
                         {item.requires_prescription ? (
                           <span
@@ -254,7 +306,7 @@ export default function Cart() {
                       <p className="mt-2 hidden text-xs leading-6 text-slate-500 sm:block">{t('এই ইউনিটে সর্বোচ্চ:', 'Maximum in this unit:')} {item.available_quantity.toLocaleString(locale)} {cartItemUnitLabel(item)}</p>
                     </div>
 
-                    <div className="col-span-2 border-t border-slate-200 pt-3 lg:col-span-1 lg:border-t-0 lg:pt-0">
+                    <div className="hidden lg:block">
                       <div className="flex items-center justify-between gap-3 lg:block">
                         <div className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">{t('পরিমাণ', 'Quantity')}</div>
                         <div className="mt-0 flex items-center gap-1.5 lg:mt-3 lg:gap-2">
@@ -274,7 +326,7 @@ export default function Cart() {
                       </div>
                     </div>
 
-                    <div className="col-span-2 border-t border-slate-200 pt-3 text-left lg:col-span-1 lg:border-t-0 lg:pt-0 lg:text-right">
+                    <div className="hidden text-left lg:block lg:text-right">
                       <div className="flex items-start justify-between gap-3 lg:block">
                         <div>
                           <div className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-400">{t('সাবটোটাল', 'Subtotal')}</div>
