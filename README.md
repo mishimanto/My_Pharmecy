@@ -174,10 +174,3 @@ Manual test checklist:
 - Dashboard and report endpoints
 - Admin activity logs and user admin actions
 
-## Security Notes
-
-- Keep `APP_DEBUG=false` in production.
-- Use strong passwords and rotate default admin credentials.
-- Use HTTPS in production.
-- Keep private files out of public web roots.
-- Review `config/filesystems.php` before storing sensitive prescription files in production.
