@@ -1,20 +1,20 @@
-# Pharmacy E-commerce System
+# Pharmacy E-commerce
 
-A Laravel 13 + React + MySQL pharmacy e-commerce application with a Bengali-first customer storefront and a permission-based admin panel.
+A pharmacy e-commerce application with a Bengali-first customer storefront and a permission-based admin panel.
 
 ## Project Overview
 
-The system supports customer medicine browsing, cart, checkout, prescriptions, orders, COD payment, delivery tracking, support tickets, returns, refunds, and notifications. The admin panel supports staff authentication, Spatie roles/permissions, catalog management, inventory batch management, prescription review, order/payment/delivery operations, support, returns/refunds, user management, dashboard summaries, and reports.
+The system supports customer medicine browsing, cart, checkout, prescriptions, orders, Cash on delivery payment, delivery tracking, support tickets, returns, refunds, and notifications. The admin panel supports staff authentication, Spatie roles/permissions, catalog management, inventory batch management, prescription review, order/payment/delivery operations, support, returns/refunds, user management, dashboard summaries, and reports.
 
 ## Stack
 
 - Backend: Laravel 13, PHP 8.3+
+- Frontend: React, React Router, Tailwind CSS, Axios, SweetAlert2, react-hot-toast
 - Database: MySQL
 - API auth: Laravel Sanctum
 - Staff roles: Spatie Laravel Permission
 - Image handling: Intervention Image
 - Social login: Laravel Socialite
-- Frontend: React, React Router, Tailwind CSS, Axios, SweetAlert2, react-hot-toast
 
 ## Backend Setup
 
@@ -173,4 +173,3 @@ Manual test checklist:
 - Return and refund processing
 - Dashboard and report endpoints
 - Admin activity logs and user admin actions
-
